@@ -35,7 +35,7 @@
       (da)->items = realloc((da)->items, sizeof((da)->items[0]) * (da)->capacity);   \
     }                                                                                \
     assert((da)->items != NULL);                                                     \
-    (da)->items[(da)->count] = item;                                                 \
+    (da)->items[(da)->count] = (item);                                                 \
     (da)->count += 1;                                                                \
   } while(0)
 
