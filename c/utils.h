@@ -9,6 +9,9 @@
 #include <assert.h>
 #include <string.h>
 
+
+#define ARRAY_LEN(arr) (sizeof((arr))/sizeof((arr)[0]))
+
 #define ut_da_declare(type)  \
   struct {                   \
     type *items;             \
