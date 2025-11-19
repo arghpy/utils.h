@@ -51,6 +51,7 @@
 #define ut_da_reset(da)                                           \
   do {                                                            \
     if ((da)->items != NULL) ut_da_free((da));                    \
+    (da)->capacity = UT_INIT_CAP;                                 \
     (da)->items = calloc((da)->capacity, sizeof((da)->items[0])); \
     (da)->count = 0;                                              \
   } while(0)
