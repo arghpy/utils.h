@@ -75,6 +75,48 @@
 
 #define ut_da_free(da) (free((da)->items))
 
+
+// Linked lists
+#define ut_ll_declare(T)   \
+  typedef struct UT_Node { \
+    struct UT_Node* prev;  \
+    T value;               \
+    struct UT_Node* next;  \
+  } UT_Node
+
+
+#define ut_ll_free(ll_head)   \
+  do {                        \
+    UT_Node *c = (ll_head);   \
+    while (c != NULL) {       \
+      UT_Node *tmp = c->next; \
+      free(c);                \
+      c = tmp;                \
+    }                         \
+    (ll_head) = NULL;         \
+  } while(0)                  \
+
+#define ut_ll_push(ll, n)                                 \
+  do {                                                    \
+    UT_Node *t = malloc(sizeof(UT_Node));                 \
+    if (!t) fprintf(stderr, "Could not request memory."); \
+    else {                                                \
+      t->prev  = NULL;                                    \
+      t->value = (n);                                     \
+      t->next  = NULL;                                    \
+      if ((ll) == NULL) {                                 \
+        (ll) = t;                                         \
+      } else {                                            \
+        UT_Node *c = (ll);                                \
+        while (c->next != NULL) {                         \
+          c = c->next;                                    \
+        }                                                 \
+        t->prev = c;                                      \
+        c->next = t;                                      \
+      }                                                   \
+    }                                                     \
+  } while(0)                                              \
+
 #endif // UT_H
 
 #ifndef UTDEF
