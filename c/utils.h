@@ -77,45 +77,45 @@
 
 
 // Linked lists
-#define ut_ll_declare(T)   \
-  typedef struct UT_Node { \
-    struct UT_Node* prev;  \
-    T value;               \
-    struct UT_Node* next;  \
-  } UT_Node
+#define ut_ll_declare(NodeName, T) \
+  typedef struct NodeName {        \
+    struct NodeName* prev;         \
+    T value;                       \
+    struct NodeName* next;         \
+  } NodeName
 
 
-#define ut_ll_free(ll_head)   \
-  do {                        \
-    UT_Node *c = (ll_head);   \
-    while (c != NULL) {       \
-      UT_Node *tmp = c->next; \
-      free(c);                \
-      c = tmp;                \
-    }                         \
-    (ll_head) = NULL;         \
-  } while(0)                  \
+#define ut_ll_free(NodeName, ll_head_ptr) \
+  do {                                \
+    NodeName *c = (ll_head_ptr);          \
+    while (c != NULL) {               \
+      NodeName *tmp = c->next;        \
+      free(c);                        \
+      c = tmp;                        \
+    }                                 \
+    (ll_head_ptr) = NULL;                 \
+  } while(0)                          \
 
-#define ut_ll_push(ll, n)                                 \
-  do {                                                    \
-    UT_Node *t = malloc(sizeof(UT_Node));                 \
-    if (!t) fprintf(stderr, "Could not request memory."); \
-    else {                                                \
-      t->prev  = NULL;                                    \
-      t->value = (n);                                     \
-      t->next  = NULL;                                    \
-      if ((ll) == NULL) {                                 \
-        (ll) = t;                                         \
-      } else {                                            \
-        UT_Node *c = (ll);                                \
-        while (c->next != NULL) {                         \
-          c = c->next;                                    \
-        }                                                 \
-        t->prev = c;                                      \
-        c->next = t;                                      \
-      }                                                   \
-    }                                                     \
-  } while(0)                                              \
+#define ut_ll_push(NodeName, ll_head_ptr, n)                \
+  do {                                                      \
+    NodeName *t = malloc(sizeof(NodeName));                 \
+    if (!t) fprintf(stderr, "Could not request memory.\n"); \
+    else {                                                  \
+      t->prev  = NULL;                                      \
+      t->value = (n);                                       \
+      t->next  = NULL;                                      \
+      if ((ll_head_ptr) == NULL) {                          \
+        (ll_head_ptr) = t;                                  \
+      } else {                                              \
+        NodeName *c = (ll_head_ptr);                        \
+        while (c->next != NULL) {                           \
+          c = c->next;                                      \
+        }                                                   \
+        t->prev = c;                                        \
+        c->next = t;                                        \
+      }                                                     \
+    }                                                       \
+  } while(0)                                                \
 
 #endif // UT_H
 
