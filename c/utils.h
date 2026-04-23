@@ -96,7 +96,7 @@
     (ll_head_ptr) = NULL;                 \
   } while(0)                          \
 
-#define ut_ll_push(NodeName, ll_head_ptr, val)              \
+#define ut_ll_push(NodeName, ll_head_ptr, val, ll_tail_ptr) \
   do {                                                      \
     NodeName *t = malloc(sizeof(NodeName));                 \
     if (!t) fprintf(stderr, "Could not request memory.\n"); \
@@ -106,13 +106,16 @@
       t->next  = NULL;                                      \
       if ((ll_head_ptr) == NULL) {                          \
         (ll_head_ptr) = t;                                  \
+        (ll_tail_ptr) = t;                                  \
       } else {                                              \
         NodeName *c = (ll_head_ptr);                        \
         while (c->next != NULL) {                           \
           c = c->next;                                      \
         }                                                   \
-        t->prev = c;                                        \
         c->next = t;                                        \
+        t->prev = c;                                        \
+                                                            \
+        (ll_tail_ptr) = t;                                  \
       }                                                     \
     }                                                       \
   } while(0)                                                \
