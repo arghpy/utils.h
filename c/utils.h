@@ -18,6 +18,20 @@
 
 #define ARRAY_LEN(arr) (sizeof((arr))/sizeof((arr)[0]))
 
+#define REVERSE_ARRAY(T, arr_ptr)              \
+  do {                                         \
+    if ((arr_ptr) != NULL) {                   \
+      size_t i = ARRAY_LEN((arr_ptr)) - 1;     \
+      size_t j = 0;                            \
+      while (i > j)                            \
+      {                                        \
+        SWAP(T, (arr_ptr)[i], (arr_ptr)[j]); \
+        i--;                                   \
+        j++;                                   \
+      }                                        \
+    }                                          \
+  } while(0)                                   \
+
 #define ut_da_declare(type)  \
   struct {                   \
     type *items;             \
@@ -124,17 +138,33 @@
 
 #ifndef UTDEF
 /*
- * Goes before declarations and definitions of the nob functions. Useful to `#define UTDEF static inline`
+ * Goes before declarations and definitions of the ut functions. Useful to `#define UTDEF static inline`
  * if your source code is a single file and you want the compiler to remove unused functions.
 */
 #define UTDEF
 
 #endif /* UTDEF */
 
-/*
- * Also include implementations.
- * Almost always declared by user.
-*/
+UTDEF void ut_strrev(char *str);
+
 #ifdef UT_IMPLEMENTATION
+
+// Reverse a normal string
+UTDEF void ut_strrev(char *str)
+{
+  if (str && *str) {
+    int i = strlen(str) - 1, j = 0;
+    char ch;
+
+    while (i > j)
+    {
+      ch = str[i];
+      str[i] = str[j];
+      str[j] = ch;
+      i--;
+      j++;
+    }
+  }
+}
 
 #endif // UT_IMPLEMENTATION
