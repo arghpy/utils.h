@@ -79,12 +79,18 @@
     memcpy((dest)->items, (src)->items, sizeof((dest)->items[0]) * (dest)->count); \
   } while(0)                                                                       \
 
-#define ut_da_pop(da, index)                           \
+#define ut_da_remove(da, index)                        \
   do {                                                 \
     assert((da)->count != 0);                          \
     for (size_t k = (index); k < (da)->count - 1; k++) \
       (da)->items[k] = (da)->items[k + 1];             \
     (da)->count--;                                     \
+  } while(0)
+
+#define ut_da_pop(da)         \
+  do {                        \
+    assert((da)->count != 0); \
+    (da)->count--;            \
   } while(0)
 
 #define ut_da_free(da) (free((da)->items))
