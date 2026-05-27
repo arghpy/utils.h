@@ -151,7 +151,10 @@
 
 #endif /* UTDEF */
 
+#include <stdio.h>
+
 UTDEF void ut_strrev(char *str);
+UTDEF char* read_entire_file(const char* filename);
 
 #ifdef UT_IMPLEMENTATION
 
@@ -171,6 +174,45 @@ UTDEF void ut_strrev(char *str)
       j++;
     }
   }
+}
+
+char* read_entire_file(const char* filename)
+{
+  FILE *f = fopen(filename, "r");
+  if (!f) {
+    // TODO: maybe make use of errno?
+    fprintf(stderr, "Could not open file: %s\n", filename);
+    exit(EXIT_FAILURE);
+  }
+
+  // Get file size
+  fseek(f, 0, SEEK_END);
+  long file_size = ftell(f);
+  if (file_size == -1) {
+    fprintf(stderr, "Could not determine file size of %s\n", filename);
+    exit(EXIT_FAILURE);
+  }
+  rewind(f);
+
+  // Read contents
+  char* data = calloc(file_size + 1, sizeof(char));
+  if (!data) {
+    fprintf(stderr, "Could not allocate enough memory to read file: %s\n", filename);
+    exit(EXIT_FAILURE);
+  }
+
+  size_t ret = fread(data, sizeof(*data), file_size, f);
+  if ((long)ret != file_size) {
+    fprintf(stderr, "Could not read all file: %s\n", filename);
+    fprintf(stderr, "Expected: %ld\n", file_size);
+    fprintf(stderr, "Read    : %zu\n", ret);
+    free(data);
+    fclose(f);
+    exit(EXIT_FAILURE);
+  }
+
+  fclose(f);
+  return data;
 }
 
 #endif // UT_IMPLEMENTATION
