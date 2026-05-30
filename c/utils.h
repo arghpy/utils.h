@@ -151,10 +151,15 @@
 
 #endif /* UTDEF */
 
+// Includes
 #include <stdio.h>
 
+// Declarations
 UTDEF void ut_strrev(char *str);
 UTDEF char* read_entire_file(const char* filename);
+UTDEF void str_chr_replace_all(char* src, char s, char d);
+UTDEF void str_chr_remove_all(char* src, char c);
+UTDEF bool str_is_number(const char* s);
 
 #ifdef UT_IMPLEMENTATION
 
@@ -213,6 +218,38 @@ char* read_entire_file(const char* filename)
 
   fclose(f);
   return data;
+}
+
+void str_chr_replace_all(char* src, char s, char d)
+{
+  char* p = strchr(src, s);
+  while (p) {
+    *p = d;
+    p = strchr(src, s);
+  }
+}
+
+void str_chr_remove_all(char* src, char c)
+{
+  char* index = strchr(src, c);
+  while (index) {
+    for (size_t i = index - src; i < strlen(src); i++)
+      *(src + i) = *(src + i + 1);
+
+    index = strchr(src, c);
+  }
+}
+
+bool str_is_number(const char* s)
+{
+  bool isnumber = true;
+  for (size_t i = 0; i < strlen(s); i++) {
+    if (!isdigit(s[i])) {
+      isnumber = false;
+      break;
+    }
+  }
+  return isnumber;
 }
 
 #endif // UT_IMPLEMENTATION
